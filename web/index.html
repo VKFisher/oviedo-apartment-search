@@ -11,8 +11,8 @@
 <aside id="panel">
   <header>
     <h1>Oviedo apartment heat map</h1>
-    <p class="sub">Brighter = better (viridis) or darker blue = better. Each factor: on/off, weight, and the distance (or value) at which its effect runs out.</p>
-    <p class="tools"><button id="copy" class="link">copy link</button> · <button id="reset" class="link">reset to defaults</button> <span class="hint">— the address bar always holds your current settings</span></p>
+    <p class="sub">Brighter = better (with the blue palette: darker = better). Each factor has an on/off switch, a weight, and the distance or value at which its effect runs out; <b>must</b> turns it into a hard filter.</p>
+    <p class="tools"><button id="copy" class="link">copy link</button> · <button id="reset" class="link">reset to defaults</button> <span class="hint">— the address bar always holds the current settings, so the link restores this exact view</span></p>
   </header>
   <section id="global">
     <label class="row"><span>Overlay opacity</span><input id="opacity" type="range" min="0" max="1" step="0.05" value="0.65"><output>0.65</output></label>
@@ -26,7 +26,7 @@
   <section id="factors"></section>
   <footer>
     <p id="meta"></p>
-    <p>Click the map for a cell breakdown. Weighted mean of the enabled factors; a factor with no data for a cell is left out of that cell's mean. <b>must</b> turns a factor into a hard filter: cells failing it are left unshaded (a factor with no data for a cell never excludes it).</p>
+    <p>Click the map for a cell breakdown. The score is the weighted mean of the enabled factors; a factor with no data for a cell is left out of that cell's mean. Cells failing a <b>must</b> filter are left unshaded; no data never excludes a cell.</p>
   </footer>
 </aside>
 <div id="map"></div>
