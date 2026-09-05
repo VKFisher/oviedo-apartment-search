@@ -57,6 +57,7 @@ function stateToParams() {
   if (view.bands !== 0) v.push('b-' + view.bands);
   if (view.opacity !== 0.65) v.push('o-' + num(view.opacity));
   if (v.length) q.set('view', v.join('_'));
+  if (new URLSearchParams(location.search).has('mobile')) q.set('mobile', '1');
   if (map) { const c = map.getCenter(); q.set('map', `${c.lat.toFixed(4)}_${c.lng.toFixed(4)}_${map.getZoom()}`); }
   return q;
 }
@@ -268,7 +269,7 @@ function onClick(e) {
   if (ex.length) html += `<p class="excl">Unshaded: fails ${ex.map((f) => `<b>${f.label}</b> (${fmtFactor(f, G.factors[f.key][i])})`).join(', ')}</p>`;
   const di = G.factors.dossier ? G.factors.dossier[i] : -1;
   if (di >= 0) html += `<p class="dlink"><a href="#" onclick="showDossier(${di});return false;">Read the ${DOSSIERS[di].name} dossier →</a></p>`;
-  L.popup({ maxWidth: 360 }).setLatLng(e.latlng).setContent(html).openOn(map);
+  L.popup({ maxWidth: Math.min(360, window.innerWidth - 40) }).setLatLng(e.latlng).setContent(html).openOn(map);
 }
 
 function slider(parent, label, min, max, step, value, unit, onInput) {
@@ -279,6 +280,36 @@ function slider(parent, label, min, max, step, value, unit, onInput) {
   parent.appendChild(row);
 }
 
+const narrow = () => window.matchMedia('(max-width: 760px)').matches || new URLSearchParams(location.search).has('mobile');
+// Narrow screens: the panel becomes a fixed strip under the map showing one card at a time
+// (View, Layers, then each factor); swipe (scroll-snap) or the arrows move between cards.
+function setupStrip() {
+  if (!narrow()) return;
+  if (new URLSearchParams(location.search).has('mobile')) document.querySelector('link[href="mobile.css"]').media = 'all';
+  const panel = document.getElementById('panel'), track = document.createElement('div');
+  track.id = 'track';
+  const cards = [...document.querySelectorAll('#factors .factor')];
+  const names = FACTORS.filter((f) => G.factors[f.key]).map((f) => f.label);
+  cards.forEach((c) => track.appendChild(c));
+  panel.appendChild(track);
+  // view settings, layer toggles and the link/reset buttons live in a ☰ sheet above the strip
+  const menu = document.getElementById('menu'), menuBtn = document.getElementById('menu-btn');
+  for (const id of ['global', 'layers']) menu.appendChild(document.getElementById(id));
+  menu.appendChild(document.querySelector('#panel .tools'));
+  const toggleMenu = (open) => { menu.hidden = !open; menuBtn.classList.toggle('on', open); if (open) map.closePopup(); };
+  menuBtn.addEventListener('click', () => toggleMenu(menu.hidden));
+  document.getElementById('menu-close').addEventListener('click', () => toggleMenu(false));
+  map.on('click', () => toggleMenu(false));
+  const nameEl = document.getElementById('strip-name');
+  let current = 0;
+  const show = () => { nameEl.innerHTML = `${names[current]}<small>${current + 1}/${names.length}</small>`; };
+  const go = (i) => { current = Math.max(0, Math.min(names.length - 1, i)); show(); track.scrollTo({ left: current * track.clientWidth, behavior: 'smooth' }); };
+  let settle;
+  track.addEventListener('scroll', () => { clearTimeout(settle); settle = setTimeout(() => { const i = Math.round(track.scrollLeft / track.clientWidth); if (i !== current) { current = i; show(); } }, 120); }); // after a swipe settles
+  show();
+  document.getElementById('prev').addEventListener('click', () => go(current - 1));
+  document.getElementById('next').addEventListener('click', () => go(current + 1));
+}
 function buildPanel() {
   const root = document.getElementById('factors');
   for (const f of FACTORS) {
@@ -353,6 +384,7 @@ function showDossier(i) {
     ${para('Character', d.character)}${para('For a family', d.families)}${para('Safety', d.safety)}${para('Nuisances', d.nuisances)}${para('Housing', d.housing)}
     <h4>Sources</h4><ol>${(d.sources || []).map((s) => `<li><a href="${s.url}" target="_blank" rel="noopener">${s.title}</a>${s.note ? ` — ${s.note}` : ''}</li>`).join('')}</ol>`;
   el.hidden = false;
+  if (narrow()) map.closePopup();
 }
 
 const overlays = {};
@@ -403,7 +435,8 @@ async function main() {
   loadState();
   loadView();
   const b = G.meta.bounds, bounds = [[b.south, b.west], [b.north, b.east]];
-  map = L.map('map');
+  map = L.map('map', { zoomControl: false });
+  L.control.zoom({ position: narrow() ? 'bottomleft' : 'topleft' }).addTo(map); // on phones the popup would sit under a top-left control
   const mp = (new URLSearchParams(location.search).get('map') || '').split('_').map(Number);
   if (mp.length === 3 && mp.every((x) => !isNaN(x))) map.setView([mp[0], mp[1]], mp[2]); else map.fitBounds(bounds);
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap contributors', maxZoom: 19 }).addTo(map);
@@ -411,6 +444,7 @@ async function main() {
   overlay = L.imageOverlay(canvas.toDataURL(), bounds, { opacity: view.opacity, interactive: false }).addTo(map);
   areasLayer = L.geoJSON(AREAS, { style: { color: '#5c5b57', weight: 1, fill: false, dashArray: '3 3' }, onEachFeature: (ft, l) => l.bindTooltip(ft.properties.name, { sticky: true }) });
   buildPanel();
+  setupStrip();
   render();
   legend();
   map.on('click', onClick);

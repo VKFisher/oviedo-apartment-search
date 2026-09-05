@@ -6,9 +6,11 @@
 <title>Oviedo apartment heat map</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="mobile.css" media="(max-width: 760px)">
 </head>
 <body>
 <aside id="panel">
+  <div id="strip-bar"><button id="menu-btn" aria-label="view and layers">☰</button><button class="arrow" id="prev" aria-label="previous">‹</button><span class="name" id="strip-name"></span><button class="arrow" id="next" aria-label="next">›</button></div>
   <header>
     <h1>Oviedo apartment heat map</h1>
     <p class="sub">Brighter = better (with the blue palette: darker = better). Each factor has an on/off switch, a weight, and the distance or value at which its effect runs out; <b>must</b> turns it into a hard filter.</p>
@@ -19,6 +21,8 @@
     <label class="row"><span>Palette</span><select id="palette"><option value="viridis">Viridis (purple → yellow)</option><option value="blue">Blue, light → dark</option><option value="diverging">Red ↔ blue (around median)</option></select></label>
     <label class="row"><span>Contrast</span><select id="stretch"><option value="view">Cells in view</option><option value="box">Whole box</option><option value="none">Absolute 0–1</option></select></label>
     <label class="row"><span>Bands</span><select id="bands"><option value="0">Continuous</option><option value="5">5 steps</option><option value="7">7 steps</option><option value="9">9 steps</option></select></label>
+  </section>
+  <section id="layers">
     <label class="row"><span>Barrio outlines</span><input id="areas" type="checkbox"></label>
     <label class="row"><span>Flood zones (T=100 / T=500)</span><input id="flood" type="checkbox"></label>
     <label class="row"><span>Noise bands (Lden)</span><input id="noise" type="checkbox"></label>
@@ -30,6 +34,7 @@
   </footer>
 </aside>
 <div id="map"></div>
+<div id="menu" hidden><div class="menu-head"><b>View &amp; layers</b><button class="close" id="menu-close" aria-label="close">×</button></div></div>
 <aside id="dossier" hidden></aside>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="app.js"></script>
