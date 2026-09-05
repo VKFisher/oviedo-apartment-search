@@ -282,7 +282,7 @@ function slider(parent, label, min, max, step, value, unit, onInput) {
 
 const narrow = () => window.matchMedia('(max-width: 760px)').matches || new URLSearchParams(location.search).has('mobile');
 // Narrow screens: the panel becomes a fixed strip under the map showing one card at a time
-// (View, Layers, then each factor); swipe (scroll-snap) or the arrows move between cards.
+// per factor; the arrows move between cards (no swipe: it would collide with slider drags).
 function setupStrip() {
   if (!narrow()) return;
   if (new URLSearchParams(location.search).has('mobile')) document.querySelector('link[href="mobile.css"]').media = 'all';
@@ -303,9 +303,8 @@ function setupStrip() {
   const nameEl = document.getElementById('strip-name');
   let current = 0;
   const show = () => { nameEl.innerHTML = `${names[current]}<small>${current + 1}/${names.length}</small>`; };
-  const go = (i) => { current = Math.max(0, Math.min(names.length - 1, i)); show(); track.scrollTo({ left: current * track.clientWidth, behavior: 'smooth' }); };
-  let settle;
-  track.addEventListener('scroll', () => { clearTimeout(settle); settle = setTimeout(() => { const i = Math.round(track.scrollLeft / track.clientWidth); if (i !== current) { current = i; show(); } }, 120); }); // after a swipe settles
+  const go = (i) => { current = Math.max(0, Math.min(names.length - 1, i)); show(); track.scrollTo({ left: current * track.clientWidth }); }; // instant: smooth scrolling is ignored on overflow:hidden
+  window.addEventListener('resize', () => track.scrollTo({ left: current * track.clientWidth })); // orientation change
   show();
   document.getElementById('prev').addEventListener('click', () => go(current - 1));
   document.getElementById('next').addEventListener('click', () => go(current + 1));

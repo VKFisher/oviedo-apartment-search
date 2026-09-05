@@ -9,9 +9,9 @@ body { display: block; }
 #strip-bar .name small { font-weight: 400; color: var(--ink-3); margin-left: 6px; }
 #menu-btn { font-size: 20px; line-height: 1; padding: 0 14px; height: 100%; background: none; border: 0; color: var(--ink-2); cursor: pointer; }
 #menu-btn.on { color: var(--accent); }
-#track { display: flex; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; height: calc(var(--strip-h) - var(--bar-h)); scrollbar-width: none; }
-#track::-webkit-scrollbar { display: none; }
-#track > * { flex: 0 0 100%; scroll-snap-align: start; padding: 6px 14px 0; border: 0; overflow: hidden; }
+/* arrows only: a horizontal swipe would collide with dragging a slider */
+#track { display: flex; overflow: hidden; touch-action: pan-y; height: calc(var(--strip-h) - var(--bar-h)); }
+#track > * { flex: 0 0 100%; padding: 6px 14px 0; border: 0; overflow: hidden; }
 #track section { padding: 6px 14px 0; }
 .factor .desc { display: none; }
 .factor .head { margin-bottom: 2px; }
