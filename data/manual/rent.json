@@ -1,0 +1,22 @@
+{
+  "_source": "idealista informes de precios, alquiler, agosto 2026 (captured 2026-09-05). Values are EUR/m2/month. Districts are idealista's; 'barrios' lists the OSM admin_level=10 (Oviedo) or admin_level=9 (Siero/Llanera parroquias) polygons each district covers. 'n.d.' districts fall back to the municipality figure.",
+  "municipalities": {
+    "Oviedo": 11.7,
+    "Siero": 9.6,
+    "Llanera": 9.6
+  },
+  "districts": [
+    {"name": "Centro-Casco Histórico", "rent": 12.4,
+     "barrios": ["Antiguo", "Centro Oeste", "Centro Norte", "Centro Sur", "Centro Este"]},
+    {"name": "Buenavista-Ería-Montecerrao", "rent": 11.0,
+     "barrios": ["Buenavista", "Monte Cerráu", "El Cristo"]},
+    {"name": "Ciudad Naranco-Vallobín-La Florida", "rent": 11.7,
+     "barrios": ["La Ciudá Naranco", "El Vallobín", "La Florida", "Argañosa", "Les Campes", "Olivares"]},
+    {"name": "Corredoria-Huca-Teatinos", "rent": 11.6,
+     "barrios": ["La Corredoria", "Teatinos", "Pumarín", "Cerdeño"]},
+    {"name": "Fozaneldi-Tenderina-Ventanielles", "rent": 10.3,
+     "barrios": ["Tenderina - Fozaneldi", "Ventanielles", "Pando", "Colloto / Cualloto"]},
+    {"name": "San Lazaro-Otero-Villafría", "rent": null,
+     "barrios": ["San Lázaro / San Llázaro", "Otero", "Fitoria", "La Iría", "Parque de Invierno", "Monxina - El Rancho", "El Pontón de Vaqueros"]}
+  ]
+}

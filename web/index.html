@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Oviedo apartment heat map</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<aside id="panel">
+  <header>
+    <h1>Oviedo apartment heat map</h1>
+    <p class="sub">Brighter = better (viridis) or darker blue = better. Each factor: on/off, weight, and the distance (or value) at which its effect runs out.</p>
+    <p class="tools"><button id="copy" class="link">copy link</button> · <button id="reset" class="link">reset to defaults</button> <span class="hint">— the address bar always holds your current settings</span></p>
+  </header>
+  <section id="global">
+    <label class="row"><span>Overlay opacity</span><input id="opacity" type="range" min="0" max="1" step="0.05" value="0.65"><output>0.65</output></label>
+    <label class="row"><span>Palette</span><select id="palette"><option value="viridis">Viridis (purple → yellow)</option><option value="blue">Blue, light → dark</option><option value="diverging">Red ↔ blue (around median)</option></select></label>
+    <label class="row"><span>Contrast</span><select id="stretch"><option value="view">Cells in view</option><option value="box">Whole box</option><option value="none">Absolute 0–1</option></select></label>
+    <label class="row"><span>Bands</span><select id="bands"><option value="0">Continuous</option><option value="5">5 steps</option><option value="7">7 steps</option><option value="9">9 steps</option></select></label>
+    <label class="row"><span>Barrio outlines</span><input id="areas" type="checkbox"></label>
+    <label class="row"><span>Flood zones (T=100 / T=500)</span><input id="flood" type="checkbox"></label>
+    <label class="row"><span>Noise bands (Lden)</span><input id="noise" type="checkbox"></label>
+  </section>
+  <section id="factors"></section>
+  <footer>
+    <p id="meta"></p>
+    <p>Click the map for a cell breakdown. Weighted mean of the enabled factors; a factor with no data for a cell is left out of that cell's mean. <b>must</b> turns a factor into a hard filter: cells failing it are left unshaded (a factor with no data for a cell never excludes it).</p>
+  </footer>
+</aside>
+<div id="map"></div>
+<aside id="dossier" hidden></aside>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

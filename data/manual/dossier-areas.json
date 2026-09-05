@@ -1,0 +1,107 @@
+{
+  "_doc": "Which map polygons each dossier covers. 'polygons' are OSM names at admin_level 10 (Oviedo barrios) or 9 (parroquias); append '|9' or '|10' when the same name exists at both levels (level 10 wins otherwise). 'carve' overrides polygons with a circle (lat, lon, radius_m) for places that have no polygon of their own; carves are applied after polygons, in order.",
+  "polygons": {
+    "centro": [
+      "Antiguo",
+      "Centro Oeste",
+      "Centro Norte",
+      "Centro Sur",
+      "Centro Este"
+    ],
+    "ciudad-naranco": [
+      "La Ciudá Naranco"
+    ],
+    "vallobin": [
+      "El Vallobín"
+    ],
+    "la-florida": [
+      "La Florida"
+    ],
+    "la-argañosa": [
+      "Argañosa",
+      "La Iría"
+    ],
+    "olivares-las-campas": [
+      "Olivares",
+      "Les Campes"
+    ],
+    "buenavista": [
+      "Buenavista"
+    ],
+    "el-cristo": [
+      "El Cristo"
+    ],
+    "montecerrao": [
+      "Monte Cerráu",
+      "Parque de Invierno"
+    ],
+    "san-lazaro-otero": [
+      "San Lázaro / San Llázaro",
+      "Otero"
+    ],
+    "ventanielles": [
+      "Ventanielles"
+    ],
+    "tenderina": [
+      "Tenderina - Fozaneldi"
+    ],
+    "la-corredoria": [
+      "La Corredoria"
+    ],
+    "teatinos": [
+      "Teatinos"
+    ],
+    "pumarin": [
+      "Pumarín"
+    ],
+    "la-cadellada": [
+      "El Pontón de Vaqueros",
+      "Cerdeño",
+      "Monxina - El Rancho",
+      "Pando|10"
+    ],
+    "colloto": [
+      "Colloto / Cualloto"
+    ],
+    "lugones": [
+      "Lugones / Llugones"
+    ],
+    "la-fresneda": [
+      "Viella"
+    ],
+    "granda-meres": [
+      "Granda",
+      "Tiñana"
+    ],
+    "el-berron": [
+      "Argüelles / Argüeyes",
+      "La Carrera"
+    ],
+    "norena": [
+      "Noreña"
+    ],
+    "llanera": [
+      "Llugo",
+      "Posada",
+      "Cayés",
+      "Ables",
+      "Pruvia"
+    ]
+  },
+  "carve": [
+    {
+      "key": "la-fresneda",
+      "lat": 43.405,
+      "lon": -5.799,
+      "radius_m": 900,
+      "why": "the urbanización lies inside the Lugones parroquia polygon"
+    },
+    {
+      "key": "colloto",
+      "lat": 43.387,
+      "lon": -5.8,
+      "radius_m": 700,
+      "why": "the Siero half of Colloto lies inside the Granda parroquia polygon"
+    }
+  ]
+}
